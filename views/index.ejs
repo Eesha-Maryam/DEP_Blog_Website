@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomePage</title>
+  <link rel="stylesheet" href="/blog_style.css">
+  <script src="https://kit.fontawesome.com/ae61999827.js" crossorigin="anonymous"></script> 
+</head>
+
+<body class="container-fluid">
+  <div class="white-space">
+    <h1 class="text-center">Interior Design Blogs</h1>
+  </div>
+  <!-- navbar-->
+  <nav class="nav row">
+    <div class="nav-links col-xl-10">
+      <a href="/">Home</a>
+      <a href="/blogs/new">New</a>
+      <a href="/post">Post</a>
+    </div>
+  </nav>
+
+  <!--bannar for homepage-->
+  <div class="banner">
+    <img src="/interior_banner.png" width="100%" alt="banner">
+  </div>
+ 
+  <!-- loop to display all the blogs stored in the database(blogdb)-->
+  <ul>
+    <% blogs.forEach(blog => { %>
+      <div class="blog-container">
+        <h2 class="blog-title"><%= blog.title %></h2>
+        <div class="blog-content">
+          <% if (blog.content.length > 200) { %>
+            <p><%= blog.content.substring(0, 200) %>...</p>
+            <p class="full-content" style="display: none;"><%= blog.content %></p>
+            <a href="#" class="read-more">Read More</a>
+          <% } else { %>
+            <p><%= blog.content %></p>
+          <% } %>
+        </div>
+      </div>
+    <% }) %>
+  </ul>
+
+  <!-- footer part with form , social media icons for (contact)-->
+  <footer class="footer_style">
+
+    <form action="/submit-contact" method="POST">
+      <input type="email" name="email" placeholder="Your Email" autocomplete="on" required>
+      <input type="submit" value="Submit">
+    </form>
+
+    <div id="contact-info">
+      <a href="https://github.com/Eesha-Maryam" id="profile-link">
+        <i class="fab fa-github"></i> Github
+      </a>
+      <a href="https://linkedin.com/in/esha-maryam-student" id="profile-link">
+        <i class="fab fa-linkedin-in"></i> LinkedIn
+      </a>
+      <a href="#" id="profile-link">
+        <i class="fab fa-instagram"></i> Instagram
+      </a>
+    </div>
+
+    <p>&copy; 2024 Blog. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
+
+<!-- javascript ofr handling the readmore functionality hides the content and unide it when lick is clicked-->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const readMoreLinks = document.querySelectorAll('.read-more');
+
+    readMoreLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const fullContent = this.parentElement.querySelector('.full-content');
+        if (fullContent.style.display === 'none') {
+          fullContent.style.display = 'block';
+          this.textContent = 'Read Less';
+        } else {
+          fullContent.style.display = 'none';
+          this.textContent = 'Read More';
+        }
+      });
+    });
+  });
+</script>
+

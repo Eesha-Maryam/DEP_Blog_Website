@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Posts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: url('/post-background.png');
+            background-size: cover; 
+            background-position: center; 
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            float: left;
+        }
+
+        .navbar ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        header {
+            background-color: #f0f0f0;
+            padding: 20px;
+
+        }
+
+        main {
+            flex: 1;
+            padding-bottom: 80px; 
+        }
+
+        footer {
+            background-color: #333; 
+            color: white; 
+            text-align: center; 
+            padding: 20px 0; 
+            margin-top: 20px;
+            width: 100%; 
+            clear: both; 
+        }
+
+        .custom-alert {
+            margin: 20px;
+        }
+
+        .blog-container {
+            background-color: #EAEAEA; 
+            border: 1px solid #2F4F4F; 
+            border-radius: 8px; 
+            padding: 30px; 
+            margin: 20px auto; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            display: flex; 
+            flex-direction: column; 
+            max-width: 600px; 
+        }
+
+        .blog-title {
+            text-align: center; 
+            margin-top: 0; 
+        }
+
+        .blog-content {
+            margin-top: 10px; 
+        }
+
+        .blog-buttons {
+            margin-top: auto;
+            display: flex; 
+            gap: 3px; 
+            justify-content: flex-end;
+        }
+
+        .blog-buttons .btn {
+            padding: 8px 12px; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 4px;
+            transition: background-color 0.3s ease; 
+        }
+
+        .blog-buttons .btn-update {
+            background-color: #4CAF50; 
+        }
+
+        .blog-buttons .btn-delete {
+            background-color: #f44336; 
+        }
+
+        .blog-buttons .btn:hover {
+            background-color: #555; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Posts</h1>
+    </header>
+<!-- navbar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/blogs/new">New</a></li>
+        </ul>
+    </nav>
+
+  <main>
+    <!-- shows flash success and error messages in post page -->
+    <% if (success && success.length > 0) { %>
+        <div class="custom-alert alert alert-success alert-dismissible fade show" role="alert">
+            <%= success %>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <% } %>
+<!-- loop for displaying all blogs in the database-->
+    <ul>
+        <% blogs.forEach(blog => { %>
+            <div class="blog-container">
+                <h2 class="blog-title"><%= blog.title %></h2>
+                <div class="blog-content">
+                    <% if (blog.content.length > 200) { %>
+                        <p><%= blog.content.substring(0, 200) %>...</p>
+                        <p class="full-content" style="display: none;"><%= blog.content %></p>
+                        <a href="#" class="read-more">Read More</a>
+                    <% } else { %>
+                        <p><%= blog.content %></p>
+                    <% } %>
+                </div>
+                <div class="blog-buttons">
+                    <a href="/edit/<%= blog.id %>" class="btn btn-update">Edit</a>
+                    <form action="/blogs/<%= blog.id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="btn btn-delete">Delete</button>
+                    </form>
+                </div>
+            </div>
+        <% }) %>
+    </ul>
+</main>
+    <footer>
+        <p>&copy; 2024 Blog. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+<!-- javascript for hidding the blog content !-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const readMoreLinks = document.querySelectorAll('.read-more');
+
+        readMoreLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const fullContent = this.parentElement.querySelector('.full-content');
+                if (fullContent.style.display === 'none') {
+                    fullContent.style.display = 'block';
+                    this.textContent = 'Read Less';
+                } else {
+                    fullContent.style.display = 'none';
+                    this.textContent = 'Read More';
+                }
+            });
+        });
+    });
+</script>
