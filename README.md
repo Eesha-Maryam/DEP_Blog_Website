@@ -9,7 +9,7 @@ Its created to show the front end how the post will appear for the user.
 compose 
 Its a form used for creating a new post for blogs.
 Post
-this page is basically a interface for backend task like editing, deleteing , reading and composing a post. Its hows all the post with the CRUD operations.
+this page is basically a interface for backend task like editing, deleteing , reading and composing a post. Its shows all the post with the CRUD operations.
 
 Technologies Used
 Frontend: HTML, CSS, JavaScript
